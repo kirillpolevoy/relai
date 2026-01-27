@@ -140,16 +140,47 @@ class ClaudeExtractor {
    * Extract conversation title
    */
   extractTitle() {
-    // Try sidebar active conversation
-    const activeConvo = document.querySelector('[class*="active"] [class*="truncate"], nav a[aria-current="page"]');
-    if (activeConvo) {
-      return activeConvo.textContent.trim();
+    console.log('[Claude] Extracting title...');
+
+    // Strategy 1: Try h1 in header (most reliable)
+    const h1 = document.querySelector('h1');
+    if (h1) {
+      const title = h1.textContent.trim();
+      if (title && title.length > 0 && title !== 'Claude') {
+        console.log('[Claude] Title from h1:', title);
+        return title;
+      }
     }
 
-    // Try document title
+    // Strategy 2: Try document title
     const docTitle = document.title.replace(' - Claude', '').replace('Claude', '').trim();
-    if (docTitle) return docTitle;
+    if (docTitle && docTitle.length > 0) {
+      console.log('[Claude] Title from document.title:', docTitle);
+      return docTitle;
+    }
 
+    // Strategy 3: Try sidebar active conversation (often truncated, so last resort)
+    const activeConvo = document.querySelector('[class*="active"] [class*="truncate"], nav a[aria-current="page"]');
+    if (activeConvo) {
+      const title = activeConvo.textContent.trim();
+      if (title && title.length > 0 && !title.startsWith('New chat')) {
+        console.log('[Claude] Title from sidebar:', title);
+        return title;
+      }
+    }
+
+    // Strategy 4: Fallback to first user message
+    const firstUserMsg = document.querySelector('.font-user-message, [data-testid="user-message"]');
+    if (firstUserMsg) {
+      const text = firstUserMsg.innerText?.trim();
+      if (text) {
+        const fallbackTitle = text.length > 50 ? text.substring(0, 50) + '...' : text;
+        console.log('[Claude] Title from first message:', fallbackTitle);
+        return fallbackTitle;
+      }
+    }
+
+    console.log('[Claude] No title found, returning null');
     return null;
   }
 
