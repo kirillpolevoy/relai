@@ -75,14 +75,30 @@ class ClaudeExtractor {
 
     console.log('[Claude] Starting message extraction');
 
-    // Claude's message structure - look for user and assistant message containers
-    const conversationContainer = document.querySelector('[class*="conversation"], main');
-    console.log('[Claude] Conversation container found:', !!conversationContainer);
+    // First, let's see what the page structure actually looks like
+    console.log('[Claude] Body children count:', document.body.children.length);
+    console.log('[Claude] Looking for common container patterns...');
 
+    // Try to find the actual conversation area with broader selectors
+    const possibleContainers = [
+      document.body,  // Fallback: search entire body
+      document.querySelector('[class*="conversation"]'),
+      document.querySelector('main'),
+      document.querySelector('[role="main"]'),
+      document.querySelector('#root'),
+      document.querySelector('[class*="chat"]'),
+      document.querySelector('[class*="message"]')
+    ].filter(el => el !== null);
+
+    console.log('[Claude] Found', possibleContainers.length, 'possible containers');
+
+    const conversationContainer = possibleContainers[0];
     if (!conversationContainer) {
-      console.log('[Claude] No conversation container found');
+      console.log('[Claude] No conversation container found at all');
       return messages;
     }
+
+    console.log('[Claude] Using container:', conversationContainer.tagName, conversationContainer.className?.substring(0, 50));
 
     // Try multiple selector strategies for Claude's UI
     const selectors = [
@@ -149,13 +165,34 @@ class ClaudeExtractor {
     // If still no messages, log sample of DOM structure for debugging
     if (messages.length === 0) {
       console.log('[Claude] No messages found. Sampling DOM structure:');
-      const sampleElements = conversationContainer.querySelectorAll('div[class]');
+
+      // Look for any divs that might be messages
+      const allDivs = conversationContainer.querySelectorAll('div');
+      console.log('[Claude] Total divs in container:', allDivs.length);
+
+      // Sample data attributes
+      const divsWithData = Array.from(allDivs).filter(div =>
+        Array.from(div.attributes).some(attr => attr.name.startsWith('data-'))
+      ).slice(0, 5);
+      console.log('[Claude] Sample divs with data attributes:',
+        divsWithData.map(div => ({
+          data: Array.from(div.attributes)
+            .filter(a => a.name.startsWith('data-'))
+            .map(a => `${a.name}="${a.value}"`)
+            .join(' '),
+          textPreview: div.innerText?.substring(0, 50)
+        }))
+      );
+
+      // Sample class names
       const classNames = new Set();
-      for (let i = 0; i < Math.min(20, sampleElements.length); i++) {
-        const classes = sampleElements[i].className;
-        if (classes) classNames.add(classes);
+      for (let i = 0; i < Math.min(50, allDivs.length); i++) {
+        const classes = allDivs[i].className;
+        if (classes && typeof classes === 'string') classNames.add(classes);
       }
-      console.log('[Claude] Sample class names found:', Array.from(classNames).slice(0, 10));
+      console.log('[Claude] Sample unique class names (first 15):',
+        Array.from(classNames).slice(0, 15)
+      );
     }
 
     return messages;
