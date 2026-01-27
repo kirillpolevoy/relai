@@ -397,21 +397,14 @@ class ClaudeExtractor {
 
       if (message.type === 'CAPTURE_CONTEXT') {
         console.log('[Claude] Handling CAPTURE_CONTEXT');
-        const messages = this.extractMessages();
-        console.log('[Claude] Extracted messages:', messages?.length);
-
-        if (messages && messages.length > 0) {
-          this.captureContext().then(() => {
-            console.log('[Claude] Capture completed');
-            sendResponse({ success: true });
-          }).catch(err => {
-            console.error('[Claude] Capture failed:', err);
-            sendResponse({ success: false, error: err.message });
-          });
-        } else {
-          console.warn('[Claude] No messages found');
-          sendResponse({ success: false, error: 'No messages found' });
-        }
+        // Don't extract here - let captureContext() do it once
+        this.captureContext().then(() => {
+          console.log('[Claude] Capture completed');
+          sendResponse({ success: true });
+        }).catch(err => {
+          console.error('[Claude] Capture failed:', err);
+          sendResponse({ success: false, error: err.message });
+        });
         return true;
       }
 

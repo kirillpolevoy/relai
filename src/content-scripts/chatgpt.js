@@ -349,13 +349,9 @@ class ChatGPTExtractor {
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       if (message.type === 'CAPTURE_CONTEXT') {
-        const messages = this.extractMessages();
-        if (messages && messages.length > 0) {
-          this.captureContext();
-          sendResponse({ success: true });
-        } else {
-          sendResponse({ success: false, error: 'No messages found' });
-        }
+        // Don't extract here - let captureContext() do it once
+        this.captureContext();
+        sendResponse({ success: true });
         return true;
       }
 
