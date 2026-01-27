@@ -353,14 +353,26 @@ class ClaudeExtractor {
   }
 
   formatContextForPaste(context) {
-    const lines = [`[Context from ${context.source}]\n`];
+    const platformName = {
+      'chatgpt': 'ChatGPT',
+      'claude': 'Claude',
+      'gemini': 'Gemini',
+      'perplexity': 'Perplexity'
+    }[context.source] || context.source;
+
+    const lines = [
+      `I'm sharing a conversation I had with ${platformName}. Here's the full context:\n`,
+      `---\n`
+    ];
 
     for (const msg of context.messages) {
-      const role = msg.role === 'user' ? 'User' : 'Assistant';
-      lines.push(`**${role}:** ${msg.content}\n`);
+      const role = msg.role === 'user' ? '**User**' : '**Assistant**';
+      lines.push(`${role}: ${msg.content}\n`);
     }
 
-    lines.push(`\n[Please continue helping with this topic.]`);
+    lines.push(`\n---\n`);
+    lines.push(`Please help me continue this conversation or answer any follow-up questions about it.`);
+
     return lines.join('\n');
   }
 

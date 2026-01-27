@@ -26,6 +26,7 @@ class ChatGPTExtractor {
     // Floating button disabled - using popup only
     // this.injectFloatingButton();
     this.setupMessageListener();
+    this.checkForPendingContext();
 
     this.isInitialized = true;
     console.log('[AI Context Bridge] ChatGPT extractor initialized');
@@ -51,6 +52,25 @@ class ChatGPTExtractor {
         reject(new Error('Timeout waiting for element'));
       }, timeout);
     });
+  }
+
+  /**
+   * Check if there's pending context to paste (from "send to" flow)
+   */
+  async checkForPendingContext() {
+    const response = await chrome.runtime.sendMessage({
+      type: 'GET_PENDING_CONTEXT',
+      payload: { platform: this.platformId }
+    });
+
+    if (response?.context) {
+      // Wait a bit for input to be ready
+      setTimeout(async () => {
+        const text = this.formatContextForPaste(response.context);
+        await this.injectIntoInput(text);
+        this.showNotification('Context ready - press Enter to send', 'success');
+      }, 1000);
+    }
   }
 
   /**
@@ -271,14 +291,26 @@ class ChatGPTExtractor {
   }
 
   formatContextForPaste(context) {
-    const lines = [`[Context from ${context.source}]\n`];
+    const platformName = {
+      'chatgpt': 'ChatGPT',
+      'claude': 'Claude',
+      'gemini': 'Gemini',
+      'perplexity': 'Perplexity'
+    }[context.source] || context.source;
+
+    const lines = [
+      `I'm sharing a conversation I had with ${platformName}. Here's the full context:\n`,
+      `---\n`
+    ];
 
     for (const msg of context.messages) {
-      const role = msg.role === 'user' ? 'User' : 'Assistant';
-      lines.push(`**${role}:** ${msg.content}\n`);
+      const role = msg.role === 'user' ? '**User**' : '**Assistant**';
+      lines.push(`${role}: ${msg.content}\n`);
     }
 
-    lines.push(`\n[Please continue helping with this topic.]`);
+    lines.push(`\n---\n`);
+    lines.push(`Please help me continue this conversation or answer any follow-up questions about it.`);
+
     return lines.join('\n');
   }
 
