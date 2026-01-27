@@ -16,7 +16,8 @@ class PerplexityExtractor {
 
     await this.waitForElement('[class*="prose"], [class*="answer"]', 3000).catch(() => {});
 
-    this.injectFloatingButton();
+    // Floating button disabled - using popup only
+    // this.injectFloatingButton();
     this.setupMessageListener();
     this.checkForPendingContext();
 

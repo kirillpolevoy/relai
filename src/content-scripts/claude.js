@@ -17,7 +17,8 @@ class ClaudeExtractor {
     // Wait for conversation to potentially load
     await this.waitForElement('[data-testid="user-message"], .font-user-message', 3000).catch(() => {});
 
-    this.injectFloatingButton();
+    // Floating button disabled - using popup only
+    // this.injectFloatingButton();
     this.setupMessageListener();
     this.checkForPendingContext();
 
@@ -356,12 +357,23 @@ class ClaudeExtractor {
 
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      console.log('[Claude] Received message:', message.type);
+
       if (message.type === 'CAPTURE_CONTEXT') {
+        console.log('[Claude] Handling CAPTURE_CONTEXT');
         const messages = this.extractMessages();
+        console.log('[Claude] Extracted messages:', messages?.length);
+
         if (messages && messages.length > 0) {
-          this.captureContext();
-          sendResponse({ success: true });
+          this.captureContext().then(() => {
+            console.log('[Claude] Capture completed');
+            sendResponse({ success: true });
+          }).catch(err => {
+            console.error('[Claude] Capture failed:', err);
+            sendResponse({ success: false, error: err.message });
+          });
         } else {
+          console.warn('[Claude] No messages found');
           sendResponse({ success: false, error: 'No messages found' });
         }
         return true;

@@ -23,7 +23,8 @@ class ChatGPTExtractor {
     // Wait for page to load
     await this.waitForElement('[data-message-author-role]', 5000).catch(() => {});
 
-    this.injectFloatingButton();
+    // Floating button disabled - using popup only
+    // this.injectFloatingButton();
     this.setupMessageListener();
 
     this.isInitialized = true;

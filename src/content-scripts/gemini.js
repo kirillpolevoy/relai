@@ -16,7 +16,8 @@ class GeminiExtractor {
 
     await this.waitForElement('[data-message-id], .conversation-container', 3000).catch(() => {});
 
-    this.injectFloatingButton();
+    // Floating button disabled - using popup only
+    // this.injectFloatingButton();
     this.setupMessageListener();
     this.checkForPendingContext();
 
