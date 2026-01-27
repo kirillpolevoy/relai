@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relai - Context Auto-Pastes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 1280px;
+      height: 800px;
+      background: #1a1612;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #f5f1e8;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 80px;
+    }
+
+    /* Subtle background pattern */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, rgba(255, 164, 27, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(255, 123, 0, 0.08) 0%, transparent 50%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Title */
+    .title {
+      text-align: center;
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 22px;
+      color: #d4a574;
+      margin-bottom: 60px;
+      font-weight: 500;
+      animation: fadeIn 1.2s ease-out 0.2s backwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Before/After split */
+    .split-view {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 0;
+      flex: 1;
+      align-items: center;
+    }
+
+    .panel {
+      background: linear-gradient(145deg, rgba(61, 53, 40, 0.4), rgba(45, 40, 32, 0.6));
+      border: 2px solid rgba(255, 164, 27, 0.2);
+      border-radius: 20px;
+      padding: 32px;
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      animation: panelSlideIn 1s ease-out backwards;
+    }
+
+    .panel.before { animation-delay: 0.4s; }
+    .panel.after { animation-delay: 0.8s; }
+
+    @keyframes panelSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(255, 164, 27, 0.2);
+    }
+
+    .panel-label {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffa41b;
+    }
+
+    .panel-icon {
+      font-size: 24px;
+    }
+
+    /* Chat interface mockup */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed rgba(139, 115, 85, 0.3);
+      border-radius: 12px;
+      color: #8b7355;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .input-box {
+      background: rgba(26, 22, 18, 0.6);
+      border: 2px solid rgba(139, 115, 85, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #8b7355;
+      line-height: 1.5;
+      min-height: 80px;
+    }
+
+    .input-box.filled {
+      border-color: rgba(255, 164, 27, 0.5);
+      color: #d4a574;
+      animation: fillGlow 1s ease-out;
+    }
+
+    @keyframes fillGlow {
+      0% {
+        box-shadow: none;
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(255, 164, 27, 0.4),
+                    inset 0 0 20px rgba(255, 164, 27, 0.1);
+      }
+      100% {
+        box-shadow: 0 0 20px rgba(255, 164, 27, 0.2),
+                    inset 0 0 10px rgba(255, 164, 27, 0.05);
+      }
+    }
+
+    .context-text {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .context-line {
+      opacity: 0;
+      animation: typeReveal 0.5s ease-out forwards;
+    }
+
+    .context-line:nth-child(1) { animation-delay: 1.2s; }
+    .context-line:nth-child(2) { animation-delay: 1.4s; }
+    .context-line:nth-child(3) { animation-delay: 1.6s; }
+
+    @keyframes typeReveal {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .context-line strong {
+      color: #ffa41b;
+      font-weight: 700;
+    }
+
+    /* Arrow separator */
+    .arrow-separator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      animation: fadeIn 1.2s ease-out 0.6s backwards;
+    }
+
+    .arrow-icon {
+      font-size: 48px;
+      color: #ffa41b;
+      animation: arrowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes arrowPulse {
+      0%, 100% {
+        transform: translateX(0);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translateX(8px);
+        opacity: 1;
+      }
+    }
+
+    .arrow-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #d4a574;
+      text-transform: uppercase;
+    }
+
+    /* Send button */
+    .send-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 100%);
+      color: #1a1612;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(255, 164, 27, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .send-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(255, 164, 27, 0.5);
+    }
+
+    .panel.after .send-button {
+      animation: buttonAppear 0.8s ease-out 1.8s backwards;
+    }
+
+    @keyframes buttonAppear {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Grain texture */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulance type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Context Auto-Pastes—Press Enter</h1>
+    <p class="subtitle">Seamless transfer with no copy-paste hassle</p>
+
+    <div class="split-view">
+      <!-- Before -->
+      <div class="panel before">
+        <div class="panel-header">
+          <div class="panel-icon">❌</div>
+          <div class="panel-label">Before</div>
+        </div>
+        <div class="chat-container">
+          <div class="empty-state">
+            Empty conversation<br>
+            No context loaded
+          </div>
+          <div class="input-box">
+            Type your message...
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="arrow-separator">
+        <div class="arrow-text">RELAI</div>
+        <div class="arrow-icon">→</div>
+      </div>
+
+      <!-- After -->
+      <div class="panel after">
+        <div class="panel-header">
+          <div class="panel-icon">✓</div>
+          <div class="panel-label">After</div>
+        </div>
+        <div class="chat-container">
+          <div class="input-box filled">
+            <div class="context-text">
+              <div class="context-line">
+                <strong>User:</strong> How do I optimize React performance?
+              </div>
+              <div class="context-line">
+                <strong>Assistant:</strong> Here are key strategies for React optimization...
+              </div>
+              <div class="context-line">
+                Continue this conversation with follow-up questions.
+              </div>
+            </div>
+          </div>
+          <button class="send-button">
+            <span>Press Enter to Send</span>
+            <span>⏎</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

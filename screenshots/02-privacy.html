@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relai - 100% Local, No Servers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 1280px;
+      height: 800px;
+      background: #1a1612;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #f5f1e8;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Animated circuit pattern background */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255, 164, 27, 0.03) 50px, rgba(255, 164, 27, 0.03) 51px),
+        repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 164, 27, 0.03) 50px, rgba(255, 164, 27, 0.03) 51px);
+      opacity: 0.5;
+    }
+
+    /* Radial glow */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 164, 27, 0.15) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 900px;
+      padding: 60px;
+    }
+
+    /* Main headline */
+    .headline {
+      font-size: 72px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 50%, #ffa41b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInScale 1s ease-out;
+      line-height: 1.2;
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Status indicator - hero element */
+    .status-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      background: linear-gradient(145deg, rgba(61, 53, 40, 0.6), rgba(45, 40, 32, 0.8));
+      border: 3px solid rgba(255, 164, 27, 0.4);
+      border-radius: 24px;
+      padding: 32px 50px;
+      margin-bottom: 60px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                  0 0 80px rgba(255, 164, 27, 0.3),
+                  inset 0 0 60px rgba(255, 164, 27, 0.1);
+      animation: statusReveal 1.2s ease-out 0.3s backwards;
+    }
+
+    @keyframes statusReveal {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .status-dot {
+      width: 32px;
+      height: 32px;
+      background: #ffa41b;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 164, 27, 0.8),
+                  0 0 40px rgba(255, 164, 27, 0.5),
+                  inset 0 2px 8px rgba(255, 255, 255, 0.3);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(255, 164, 27, 0.8),
+                    0 0 40px rgba(255, 164, 27, 0.5),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 30px rgba(255, 164, 27, 1),
+                    0 0 60px rgba(255, 164, 27, 0.7),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.4);
+      }
+    }
+
+    .status-text {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #ffa41b;
+      text-shadow: 0 0 30px rgba(255, 164, 27, 0.5);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Feature list */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 50px;
+      animation: fadeInUp 1.4s ease-out 0.5s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature {
+      background: linear-gradient(145deg, rgba(61, 53, 40, 0.3), rgba(45, 40, 32, 0.4));
+      border: 1px solid rgba(255, 164, 27, 0.2);
+      border-radius: 16px;
+      padding: 24px 28px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      border-color: rgba(255, 164, 27, 0.5);
+      transform: translateX(8px);
+      box-shadow: 0 8px 24px rgba(255, 164, 27, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+
+    .feature-text {
+      font-size: 18px;
+      line-height: 1.5;
+      color: #d4a574;
+      font-weight: 500;
+    }
+
+    .feature-text strong {
+      color: #ffa41b;
+      font-weight: 600;
+    }
+
+    /* Bottom tagline */
+    .tagline {
+      font-size: 20px;
+      color: #d4a574;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: fadeIn 1.6s ease-out 0.7s backwards;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Lock icon decoration */
+    .lock-decoration {
+      position: absolute;
+      top: 80px;
+      right: 120px;
+      font-size: 120px;
+      opacity: 0.08;
+      animation: floatRotate 8s ease-in-out infinite;
+    }
+
+    @keyframes floatRotate {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* Shield decoration */
+    .shield-decoration {
+      position: absolute;
+      bottom: 80px;
+      left: 120px;
+      font-size: 100px;
+      opacity: 0.08;
+      animation: floatRotate 7s ease-in-out infinite;
+      animation-delay: -3s;
+    }
+
+    /* Grain texture */
+    .grain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="lock-decoration">🔒</div>
+  <div class="shield-decoration">🛡️</div>
+
+  <div class="container">
+    <h1 class="headline">100% Local<br>No Servers</h1>
+
+    <div class="status-box">
+      <div class="status-dot"></div>
+      <div class="status-text">LOCAL</div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">💾</div>
+        <div class="feature-text">
+          <strong>Browser storage only</strong><br>
+          All data stays on your device
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🚫</div>
+        <div class="feature-text">
+          <strong>No external servers</strong><br>
+          Zero network requests
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">👁️</div>
+        <div class="feature-text">
+          <strong>No tracking</strong><br>
+          No analytics, no telemetry
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">📂</div>
+        <div class="feature-text">
+          <strong>Export anytime</strong><br>
+          Your data, your control
+        </div>
+      </div>
+    </div>
+
+    <div class="tagline">Privacy by Design • Open Source</div>
+  </div>
+
+  <div class="grain"></div>
+</body>
+</html>

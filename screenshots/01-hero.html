@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relai - Transfer Conversations in 3 Steps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 1280px;
+      height: 800px;
+      background: #1a1612;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #f5f1e8;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 164, 27, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(255, 123, 0, 0.06) 0%, transparent 50%);
+      animation: ambientPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes ambientPulse {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-2%, -2%) scale(1.05); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 80px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 80px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      text-shadow: 0 0 60px rgba(255, 164, 27, 0.3);
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 164, 27, 0.4)); }
+      50% { filter: drop-shadow(0 0 40px rgba(255, 164, 27, 0.6)); }
+    }
+
+    .tagline {
+      font-size: 28px;
+      font-weight: 500;
+      color: #d4a574;
+      letter-spacing: 0.05em;
+    }
+
+    /* Main title */
+    .title {
+      text-align: center;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 60px;
+      color: #f5f1e8;
+      letter-spacing: 0.02em;
+      animation: fadeIn 1.2s ease-out 0.2s backwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Steps container */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 50px;
+      align-items: start;
+      animation: fadeIn 1.4s ease-out 0.4s backwards;
+    }
+
+    .step {
+      position: relative;
+      background: linear-gradient(145deg, rgba(61, 53, 40, 0.4), rgba(45, 40, 32, 0.6));
+      border: 2px solid rgba(255, 164, 27, 0.2);
+      border-radius: 24px;
+      padding: 40px 32px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: stepReveal 0.8s ease-out backwards;
+    }
+
+    .step:nth-child(1) { animation-delay: 0.6s; }
+    .step:nth-child(2) { animation-delay: 0.8s; }
+    .step:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes stepReveal {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .step:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 164, 27, 0.5);
+      box-shadow: 0 20px 60px rgba(255, 164, 27, 0.25),
+                  inset 0 0 40px rgba(255, 164, 27, 0.08);
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 700;
+      color: #1a1612;
+      box-shadow: 0 0 40px rgba(255, 164, 27, 0.5),
+                  inset 0 2px 8px rgba(255, 255, 255, 0.2);
+      animation: numberPulse 2s ease-in-out infinite;
+    }
+
+    .step:nth-child(2) .step-number { animation-delay: 0.3s; }
+    .step:nth-child(3) .step-number { animation-delay: 0.6s; }
+
+    @keyframes numberPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 164, 27, 0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(255, 164, 27, 0.7); }
+    }
+
+    .step-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffa41b;
+      margin-bottom: 16px;
+      letter-spacing: 0.03em;
+    }
+
+    .step-description {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #d4a574;
+      font-weight: 400;
+    }
+
+    /* Visual mockups */
+    .step-visual {
+      margin-top: 24px;
+      padding: 20px;
+      background: rgba(26, 22, 18, 0.6);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 164, 27, 0.15);
+    }
+
+    .mini-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #ffa41b 0%, #ff7b00 100%);
+      color: #1a1612;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 12px rgba(255, 164, 27, 0.3);
+    }
+
+    .mini-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mini-item {
+      background: rgba(61, 53, 40, 0.4);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #d4a574;
+      border-left: 2px solid #ffa41b;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .mini-platform {
+      background: rgba(61, 53, 40, 0.4);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffa41b;
+      text-align: center;
+    }
+
+    /* Connection lines */
+    .connector {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(255, 164, 27, 0.4) 0%, rgba(255, 164, 27, 0.1) 100%);
+      transform: translateY(-50%);
+      animation: flowRight 2s ease-in-out infinite;
+    }
+
+    .step:nth-child(3) .connector { display: none; }
+
+    @keyframes flowRight {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .connector::after {
+      content: '→';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffa41b;
+      font-size: 20px;
+      animation: arrowBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(5px); }
+    }
+
+    /* Grain texture overlay */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">RELAI</div>
+      <div class="tagline">Transfer Conversations Between AI Platforms</div>
+    </div>
+
+    <h1 class="title">Transfer Conversations in 3 Steps</h1>
+
+    <div class="steps">
+      <div class="step">
+        <div class="connector"></div>
+        <div class="step-number">①</div>
+        <div class="step-title">CAPTURE</div>
+        <div class="step-description">
+          Click Relai icon while on any AI chat
+        </div>
+        <div class="step-visual">
+          <div class="mini-button">📥 Capture from this tab</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="connector"></div>
+        <div class="step-number">②</div>
+        <div class="step-title">VIEW SAVED</div>
+        <div class="step-description">
+          Browse your captured conversations
+        </div>
+        <div class="step-visual">
+          <div class="mini-list">
+            <div class="mini-item">AI Debugging Tips • 5m ago</div>
+            <div class="mini-item">React Performance • 2h ago</div>
+            <div class="mini-item">Database Design • 1d ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">③</div>
+        <div class="step-title">SEND TO</div>
+        <div class="step-description">
+          Choose destination platform
+        </div>
+        <div class="step-visual">
+          <div class="mini-grid">
+            <div class="mini-platform">ChatGPT</div>
+            <div class="mini-platform">Claude</div>
+            <div class="mini-platform">Gemini</div>
+            <div class="mini-platform">Perplexity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
