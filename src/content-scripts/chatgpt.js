@@ -96,22 +96,45 @@ class ChatGPTExtractor {
   extractMessages() {
     const messages = [];
 
+    console.log('[ChatGPT] Starting message extraction');
+
     // ChatGPT uses data-message-author-role attribute
     const messageElements = document.querySelectorAll('[data-message-author-role]');
+    console.log('[ChatGPT] Found message elements:', messageElements.length);
 
-    messageElements.forEach(el => {
+    messageElements.forEach((el, index) => {
       const role = el.getAttribute('data-message-author-role');
+      console.log(`[ChatGPT] Message ${index + 1}: role="${role}"`);
+
       if (role === 'user' || role === 'assistant') {
         // Find the text content container
         const contentEl = el.querySelector('.markdown, .whitespace-pre-wrap');
+
         if (contentEl) {
+          const content = contentEl.innerText.trim();
+          console.log(`[ChatGPT] Message ${index + 1}: Found content (${content.length} chars)`);
           messages.push({
             role: role,
-            content: contentEl.innerText.trim()
+            content: content
           });
+        } else {
+          console.log(`[ChatGPT] Message ${index + 1}: No content element found (.markdown or .whitespace-pre-wrap)`);
+
+          // Try fallback - get text from parent element
+          const fallbackContent = el.innerText?.trim();
+          if (fallbackContent && fallbackContent.length > 0) {
+            console.log(`[ChatGPT] Message ${index + 1}: Using fallback content (${fallbackContent.length} chars)`);
+            messages.push({
+              role: role,
+              content: fallbackContent
+            });
+          }
         }
       }
     });
+
+    console.log('[ChatGPT] Total messages extracted:', messages.length);
+    console.log('[ChatGPT] Breakdown:', messages.filter(m => m.role === 'user').length, 'user,', messages.filter(m => m.role === 'assistant').length, 'assistant');
 
     return messages;
   }
