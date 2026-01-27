@@ -58,18 +58,35 @@ class ChatGPTExtractor {
    * Check if there's pending context to paste (from "send to" flow)
    */
   async checkForPendingContext() {
+    console.log('[ChatGPT] Checking for pending context...');
+    console.log('[ChatGPT] Platform ID:', this.platformId);
+
     const response = await chrome.runtime.sendMessage({
       type: 'GET_PENDING_CONTEXT',
       payload: { platform: this.platformId }
     });
 
+    console.log('[ChatGPT] Pending context response:', response);
+
     if (response?.context) {
+      console.log('[ChatGPT] Found pending context, will inject in 1s');
       // Wait a bit for input to be ready
       setTimeout(async () => {
-        const text = this.formatContextForPaste(response.context);
-        await this.injectIntoInput(text);
-        this.showNotification('Context ready - press Enter to send', 'success');
+        try {
+          console.log('[ChatGPT] Formatting context...');
+          const text = this.formatContextForPaste(response.context);
+          console.log('[ChatGPT] Text length:', text.length);
+          console.log('[ChatGPT] Injecting into input...');
+          await this.injectIntoInput(text);
+          console.log('[ChatGPT] Injection successful!');
+          this.showNotification('Context ready - press Enter to send', 'success');
+        } catch (err) {
+          console.error('[ChatGPT] Failed to inject context:', err);
+          this.showNotification('Failed to paste context', 'error');
+        }
       }, 1000);
+    } else {
+      console.log('[ChatGPT] No pending context found');
     }
   }
 
