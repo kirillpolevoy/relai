@@ -39,8 +39,8 @@ But every time you switch, you lose context and have to re-explain everything. *
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/kirillpolevoy/ai-context-bridge.git
-   cd ai-context-bridge
+   git clone https://github.com/kirillpolevoy/ai-context-bridge.git relai
+   cd relai
    ```
 
 2. Open Chrome and go to `chrome://extensions/`
@@ -118,7 +118,7 @@ Open the Relai popup to:
 ### Project Structure
 
 ```
-ai-context-bridge/
+relai/
 ├── manifest.json          # Extension manifest (v3)
 ├── src/
 │   ├── background/        # Service worker
