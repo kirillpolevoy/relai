@@ -1,33 +1,40 @@
-# AI Context Bridge - Retro TE Redesign
+# Relai - WALL-E Inspired Design
 
 ## Design Philosophy
 
-Inspired by **Teenage Engineering** products (OP-1, Pocket Operator), this redesign transforms the extension into a precision instrument that feels tactile and purposeful.
+Inspired by **WALL-E** - the resourceful robot collecting memories in a forgotten world. Relai is your companion for preserving and transferring conversations between AI platforms, with warm retro-futuristic aesthetics that feel nostalgic yet purposeful.
 
 ### Aesthetic Pillars
 
-1. **Industrial Utilitarian** - Every element serves a function
-2. **Retro Technical** - Monospace typography, technical labels, grid systems
-3. **Refined Brutalism** - Bold borders, high contrast, no decoration
-4. **Precision Hardware** - Feels like operating a physical device
+1. **Warm Retro-Futurism** - Amber and orange tones evoke old CRT monitors
+2. **Utilitarian Purpose** - Every element supports the core workflow
+3. **Organic Technical** - Soft rounded edges meet precise functionality
+4. **Memory Preservation** - Design communicates saving and organizing
 
 ### Color Palette
 
 ```
-TE Black:     #1a1a1a (primary background)
-TE Gray-900:  #2a2a2a (panels)
-TE Gray-800:  #3a3a3a (hover states)
-TE Gray-700:  #4a4a4a (borders)
-TE Orange:    #ff6b35 (primary accent)
-TE Green:     #06ffa5 (status indicators)
-TE Red:       #e63946 (danger actions)
+WALL-E Dark Palette:
+  --walle-black:       #1a1612  (deep brown-black, primary background)
+  --walle-gray-900:    #2d2820  (warm dark panels)
+  --walle-gray-800:    #3d3528  (hover states)
+  --walle-gray-700:    #4d4538  (borders)
+  --walle-brown:       #8b7355  (secondary text)
+
+WALL-E Warm Accents:
+  --walle-yellow:      #ffa41b  (primary accent, glowing warmth)
+  --walle-orange:      #ff7b00  (hover states, active elements)
+  --walle-amber:       #d4a574  (metadata, timestamps)
+  --walle-cream:       #f5f1e8  (primary text)
+  --walle-rust:        #c97d46  (secondary actions)
 ```
 
 ### Typography
 
-- **Primary**: Space Mono (monospace, technical)
-- **Display**: Space Mono Bold (headers, labels)
-- **Style**: All-caps, generous letter-spacing, tabular numerals
+- **Primary**: -apple-system, SF Pro Display (clean, readable)
+- **Headers**: Bold weight with generous letter-spacing
+- **Body**: Regular weight, warm cream color
+- **Style**: Clean hierarchy, ample whitespace, readable at small sizes
 
 ### Key Changes
 
@@ -35,99 +42,123 @@ TE Red:       #e63946 (danger actions)
 
 **Before** → **After**
 
-- "Saved Contexts" → "MEMORY BANK"
-- "Quick Actions" → "CONTROLS"
-- "Open AI Chat" → "LAUNCH"
-- "Local Only" → "LOCAL" with status dot
-- "No saved contexts yet" → "NO CAPTURES"
-- "Visit ChatGPT..." → "PRESS 🔄 ON AI PLATFORM"
-- "All data stays in your browser..." → "NO SERVERS · NO TRACKING · 100% BROWSER"
-- Platform names → 3-letter abbreviations (GPT, CLD, GEM, PRP)
-- "just now" → "NOW"
-- "5m ago" → "5M"
+- "AI Context Bridge" → "RELAI"
+- "Saved Contexts" → "SAVED" (numbered workflow section)
+- "Quick Actions" → "CAPTURE" (workflow step ①)
+- "Send to" → "SEND TO" (workflow step ③)
+- "Local Only" → "LOCAL" with status indicator
+- "No saved contexts yet" → "No conversations captured yet. Click ① above to save your first one."
+- Platform names shown in full (ChatGPT, Claude, Gemini, Perplexity)
+- Remove CTX-1 badge (was too technical)
+- "just now" → relative timestamps (5m ago, 2h ago)
 
 **Why?**
-- Active, imperative language
-- Remove qualifying words
-- Every word earns its place
-- Specific over vague
-- Terse, technical precision
+- Workflow-oriented (numbered steps ①②③)
+- Full platform names for clarity
+- Conversational empty states
+- Warm, approachable language
+- Clear user journey
 
 #### Visual Changes
 
 1. **Header**
-   - Model badge "CTX-1" (OP-1 inspired)
-   - Pulsing green status dot
-   - Bold orange border accent
+   - Large "RELAI" title with glow effect
+   - Pulsing amber status dot labeled "LOCAL"
+   - Subtitle: "NO SERVERS · NO TRACKING · 100% LOCAL"
+   - Warm gradient shadow effect
 
-2. **Memory Bank**
-   - Counter display with zero-padding (00, 01, 02...)
-   - Platform abbreviations instead of emoji
-   - Condensed metadata (5M, 12 MSG)
+2. **Workflow Sections**
+   - ① CAPTURE - Single large button to capture current tab
+   - ② SAVED - List of saved conversations with metadata
+   - ③ SEND TO - Grid of platform buttons for transfer
+   - Numbered circles with amber glow effect
+
+3. **Conversation Cards**
+   - Rounded corners (8px)
+   - Soft hover glow (warm orange)
+   - Platform name, timestamp, message count
+   - Title truncation with ellipsis
    - Staggered fade-in animations
 
-3. **Controls**
-   - Large, tactile buttons with icons
-   - Top border animation on hover
-   - Deliberate press feedback
+4. **Platform Buttons**
+   - 2x2 grid layout
+   - Full platform names (not abbreviations)
+   - Rounded corners (8px)
+   - Warm glow on hover
+   - Platform-specific colors (ChatGPT green, Claude orange, etc.)
 
-4. **Launch Grid**
-   - 4x1 grid of square platform buttons
-   - Subtle orange glow on hover
-   - Abbreviations only (GPT, CLD, GEM, PRP)
-
-5. **Modal**
-   - Orange border for emphasis
-   - Grid-based layout for send actions
-   - Reduced visual noise
+5. **Context Detail Modal**
+   - Warm border glow
+   - Full message preview
+   - Grid of "Send to" buttons
+   - Export/delete actions
+   - Smooth transitions
 
 #### Interactions
 
-- **Hover effects**: Border color changes, subtle backgrounds
-- **Active states**: Physical press feedback (translateY)
-- **Animations**: Staggered list items, pulsing status dot
-- **Toast notifications**: High-contrast orange on black
+- **Hover effects**: Warm amber/orange glows, subtle scale transforms
+- **Active states**: Gentle press feedback with scale transforms
+- **Animations**: Fade-ins, pulsing status dot, smooth transitions
+- **Toast notifications**: Warm amber/orange on dark background
+- **Loading states**: Gentle opacity animations
 
 ### Icon Design
 
-New extension icon features:
-- Black background with orange border
-- Dual nodes connected by data bridge
-- Animated data flow indicators
-- "CTX-1" model badge
-- Subtle grid pattern background
+Current icon features:
+- Glowing neon circuit board aesthetic
+- Warm amber/orange tones
+- High contrast for toolbar visibility
+- Matches the warm retro-futuristic theme
 
 ### Technical Details
 
 - No build step required
-- Google Fonts: Space Mono
+- System fonts (SF Pro on macOS)
 - CSS custom properties for theming
+- Smooth animations with cubic-bezier easing
+- Responsive grid layouts
 - Webkit scrollbar styling
-- Animation-delay for stagger effects
 
-### Files Modified
+### Files Structure
 
 ```
-popup/popup.html  - Complete restructure
-popup/popup.css   - Full retro styling (650 lines)
-popup/popup.js    - Updated for new HTML structure
-icons/icon*.png   - New TE-inspired icons
+popup/
+  popup.html  - Numbered workflow sections (①②③)
+  popup.css   - WALL-E color palette and warm styling
+  popup.js    - Full platform names, improved UX
+
+icons/
+  icon16.png   - Toolbar icon
+  icon48.png   - Extension page icon
+  icon128.png  - Web store icon
+  icon-source.png - Original high-res source
 ```
+
+## Current Features
+
+1. **Capture Workflow** - Save conversations from any supported platform
+2. **View Saved** - Browse all captured conversations with metadata
+3. **Send To Platform** - Transfer context to any AI platform with auto-paste
+4. **Export/Import** - Backup and restore your conversation history
+5. **Multi-strategy Extraction** - Reliable message capture across platforms
+6. **Title Extraction** - Accurate conversation titles from all platforms
 
 ## Usage
 
-1. Reload the extension in `chrome://extensions/`
-2. Click the extension icon to see the new interface
-3. Experience precision-crafted interactions
+1. Open any AI chat (ChatGPT, Claude, Gemini, Perplexity)
+2. Click the Relai extension icon
+3. Click **"Capture from this tab"** (workflow step ①)
+4. View saved conversations (workflow step ②)
+5. Click a conversation, then choose platform to send to (workflow step ③)
+6. Context auto-pastes into the new platform
 
-## Inspiration References
+## Design Inspiration
 
-- Teenage Engineering OP-1 (synthesizer UI)
-- Teenage Engineering Pocket Operators (minimalist displays)
-- Retro hardware interfaces (Roland, Korg)
-- Technical documentation aesthetics
-- Industrial design language
+- WALL-E (warm retro-futuristic aesthetic, memory preservation theme)
+- Retro CRT monitors (amber glow, warm tones)
+- Vintage computing interfaces (tactile, purposeful)
+- Memory box aesthetic (preserving precious conversations)
 
 ---
 
-**Result**: A Chrome extension that feels like operating a piece of precision hardware, not a disposable web app.
+**Result**: A Chrome extension that feels like a warm, trustworthy companion for preserving and sharing your AI conversations - not a cold, technical tool.
