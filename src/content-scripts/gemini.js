@@ -309,6 +309,17 @@ class GeminiExtractor {
 
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.type === 'CAPTURE_CONTEXT') {
+        const messages = this.extractMessages();
+        if (messages && messages.length > 0) {
+          this.captureContext();
+          sendResponse({ success: true });
+        } else {
+          sendResponse({ success: false, error: 'No messages found' });
+        }
+        return true;
+      }
+
       if (message.type === 'PASTE_CONTEXT') {
         this.injectIntoInput(message.payload.text)
           .then(() => sendResponse({ success: true }))
