@@ -39,7 +39,7 @@ But every time you switch, you lose context and have to re-explain everything. *
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/kirillpolevoy/ai-context-bridge.git relai
+   git clone https://github.com/kirillpolevoy/relai.git
    cd relai
    ```
 
