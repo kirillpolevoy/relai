@@ -75,124 +75,82 @@ class ClaudeExtractor {
 
     console.log('[Claude] Starting message extraction');
 
-    // First, let's see what the page structure actually looks like
-    console.log('[Claude] Body children count:', document.body.children.length);
-    console.log('[Claude] Looking for common container patterns...');
+    // Claude Code uses data-testid attributes with "message" in them
+    // Based on DOM inspection, we know there are elements with [data-testid*="message"]
+    const allMessageElements = document.querySelectorAll('[data-testid*="message"]');
+    console.log('[Claude] Found message elements:', allMessageElements.length);
 
-    // Try to find the actual conversation area with broader selectors
-    const possibleContainers = [
-      document.body,  // Fallback: search entire body
-      document.querySelector('[class*="conversation"]'),
-      document.querySelector('main'),
-      document.querySelector('[role="main"]'),
-      document.querySelector('#root'),
-      document.querySelector('[class*="chat"]'),
-      document.querySelector('[class*="message"]')
-    ].filter(el => el !== null);
-
-    console.log('[Claude] Found', possibleContainers.length, 'possible containers');
-
-    const conversationContainer = possibleContainers[0];
-    if (!conversationContainer) {
-      console.log('[Claude] No conversation container found at all');
+    if (allMessageElements.length === 0) {
+      console.log('[Claude] No message elements found');
       return messages;
     }
 
-    console.log('[Claude] Using container:', conversationContainer.tagName, conversationContainer.className?.substring(0, 50));
+    // Extract messages by checking data-testid values
+    allMessageElements.forEach((el, index) => {
+      const testId = el.getAttribute('data-testid') || '';
+      console.log(`[Claude] Message ${index + 1} data-testid:`, testId);
 
-    // Try multiple selector strategies for Claude's UI
-    const selectors = [
-      // Strategy 1: data-testid attributes
-      { user: '[data-testid="user-message"]', assistant: '[data-testid="assistant-message"]' },
-      // Strategy 2: class-based
-      { user: '.font-user-message', assistant: '.font-claude-message' },
-      // Strategy 3: role-based divs
-      { user: '[data-role="user"]', assistant: '[data-role="assistant"]' }
-    ];
+      let role = null;
 
-    for (const [index, selector] of selectors.entries()) {
-      console.log(`[Claude] Trying selector strategy ${index + 1}:`, selector);
-      const userMsgs = document.querySelectorAll(selector.user);
-      const assistantMsgs = document.querySelectorAll(selector.assistant);
-      console.log(`[Claude] Strategy ${index + 1} found: ${userMsgs.length} user, ${assistantMsgs.length} assistant`);
+      // Determine role from data-testid
+      if (testId.includes('user')) {
+        role = 'user';
+      } else if (testId.includes('assistant') || testId.includes('claude')) {
+        role = 'assistant';
+      }
 
-      if (userMsgs.length > 0 || assistantMsgs.length > 0) {
-        // Combine and sort by DOM position
-        const allMsgs = [
-          ...Array.from(userMsgs).map(el => ({ el, role: 'user' })),
-          ...Array.from(assistantMsgs).map(el => ({ el, role: 'assistant' }))
-        ].sort((a, b) => {
-          const position = a.el.compareDocumentPosition(b.el);
-          return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
-        });
+      const content = el.innerText?.trim();
 
-        for (const { el, role } of allMsgs) {
-          const content = el.innerText?.trim();
-          if (content) {
-            messages.push({ role, content });
+      if (role && content) {
+        console.log(`[Claude] Extracted ${role} message:`, content.substring(0, 50));
+        messages.push({ role, content });
+      } else {
+        console.log(`[Claude] Skipped message - role: ${role}, has content: ${!!content}`);
+      }
+    });
+
+    console.log('[Claude] Total messages extracted:', messages.length);
+
+    // Fallback: try old selectors if new approach didn't work
+    if (messages.length === 0) {
+      console.log('[Claude] Trying fallback selectors');
+      const selectors = [
+        // Strategy 1: data-testid attributes
+        { user: '[data-testid="user-message"]', assistant: '[data-testid="assistant-message"]' },
+        // Strategy 2: class-based
+        { user: '.font-user-message', assistant: '.font-claude-message' },
+        // Strategy 3: role-based divs
+        { user: '[data-role="user"]', assistant: '[data-role="assistant"]' }
+      ];
+
+      for (const [index, selector] of selectors.entries()) {
+        console.log(`[Claude] Fallback strategy ${index + 1}:`, selector);
+        const userMsgs = document.querySelectorAll(selector.user);
+        const assistantMsgs = document.querySelectorAll(selector.assistant);
+        console.log(`[Claude] Fallback ${index + 1} found: ${userMsgs.length} user, ${assistantMsgs.length} assistant`);
+
+        if (userMsgs.length > 0 || assistantMsgs.length > 0) {
+          const allMsgs = [
+            ...Array.from(userMsgs).map(el => ({ el, role: 'user' })),
+            ...Array.from(assistantMsgs).map(el => ({ el, role: 'assistant' }))
+          ].sort((a, b) => {
+            const position = a.el.compareDocumentPosition(b.el);
+            return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+
+          for (const { el, role } of allMsgs) {
+            const content = el.innerText?.trim();
+            if (content) {
+              messages.push({ role, content });
+            }
+          }
+
+          if (messages.length > 0) {
+            console.log(`[Claude] Fallback ${index + 1} succeeded`);
+            break;
           }
         }
-
-        if (messages.length > 0) {
-          console.log(`[Claude] Strategy ${index + 1} succeeded, extracted ${messages.length} messages`);
-          break;
-        }
       }
-    }
-
-    // Fallback: Try to parse conversation from general structure
-    if (messages.length === 0) {
-      console.log('[Claude] All strategies failed, trying fallback');
-      const turns = document.querySelectorAll('[class*="turn"], [class*="message-row"]');
-      console.log('[Claude] Fallback found turns:', turns.length);
-
-      turns.forEach(turn => {
-        const isUser = turn.classList.toString().includes('human') ||
-                       turn.classList.toString().includes('user') ||
-                       turn.querySelector('[class*="user"]');
-        const content = turn.innerText?.trim();
-        if (content && content.length > 0) {
-          messages.push({
-            role: isUser ? 'user' : 'assistant',
-            content
-          });
-        }
-      });
-
-      console.log('[Claude] Fallback extracted:', messages.length, 'messages');
-    }
-
-    // If still no messages, log sample of DOM structure for debugging
-    if (messages.length === 0) {
-      console.log('[Claude] No messages found. Sampling DOM structure:');
-
-      // Look for any divs that might be messages
-      const allDivs = conversationContainer.querySelectorAll('div');
-      console.log('[Claude] Total divs in container:', allDivs.length);
-
-      // Sample data attributes
-      const divsWithData = Array.from(allDivs).filter(div =>
-        Array.from(div.attributes).some(attr => attr.name.startsWith('data-'))
-      ).slice(0, 5);
-      console.log('[Claude] Sample divs with data attributes:',
-        divsWithData.map(div => ({
-          data: Array.from(div.attributes)
-            .filter(a => a.name.startsWith('data-'))
-            .map(a => `${a.name}="${a.value}"`)
-            .join(' '),
-          textPreview: div.innerText?.substring(0, 50)
-        }))
-      );
-
-      // Sample class names
-      const classNames = new Set();
-      for (let i = 0; i < Math.min(50, allDivs.length); i++) {
-        const classes = allDivs[i].className;
-        if (classes && typeof classes === 'string') classNames.add(classes);
-      }
-      console.log('[Claude] Sample unique class names (first 15):',
-        Array.from(classNames).slice(0, 15)
-      );
     }
 
     return messages;
