@@ -155,12 +155,12 @@ class BaseExtractor {
       };
 
       // Send to background script to save
-      const response = await chrome.runtime.sendMessage({
+      const response = await this.sendMessageSafe({
         type: 'SAVE_CONTEXT',
         payload: context
       });
 
-      if (response.success) {
+      if (response?.success) {
         this.showNotification(`Captured ${messages.length} messages`, 'success');
       } else {
         this.showNotification('Failed to save context', 'error');
@@ -176,11 +176,11 @@ class BaseExtractor {
    */
   async pasteContext() {
     try {
-      const response = await chrome.runtime.sendMessage({
+      const response = await this.sendMessageSafe({
         type: 'GET_LATEST_CONTEXT'
       });
 
-      if (!response.context) {
+      if (!response?.context) {
         this.showNotification('No saved context found', 'warning');
         return;
       }
@@ -215,12 +215,12 @@ class BaseExtractor {
       };
 
       // Save and open in new platform
-      const response = await chrome.runtime.sendMessage({
+      const response = await this.sendMessageSafe({
         type: 'SEND_TO_PLATFORM',
         payload: { context, targetPlatform: platformId }
       });
 
-      if (response.success) {
+      if (response?.success) {
         this.showNotification(`Opening ${platformId}...`, 'success');
       }
     } catch (error) {
@@ -273,6 +273,26 @@ class BaseExtractor {
       notification.classList.add('acb-notification-hide');
       setTimeout(() => notification.remove(), 300);
     }, 2500);
+  }
+
+  /**
+   * Safely send message to background script with error handling
+   */
+  async sendMessageSafe(message) {
+    try {
+      return await chrome.runtime.sendMessage(message);
+    } catch (error) {
+      // Extension context invalidated (extension was reloaded)
+      if (error.message.includes('Extension context invalidated')) {
+        this.showNotification('Extension was reloaded. Please refresh this page.', 'warning');
+        console.warn('[AI Context Bridge] Extension context invalidated. Page refresh needed.');
+        return null;
+      }
+      // Other errors
+      console.error('[AI Context Bridge] Message send failed:', error);
+      this.showNotification('Communication error. Try reloading the page.', 'error');
+      return null;
+    }
   }
 
   /**
