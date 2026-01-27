@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Context Bridge</title>
+  <title>Relai</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -14,96 +14,89 @@
     <!-- Header -->
     <header class="header">
       <div class="header-top">
-        <div class="model-badge">CTX-1</div>
+        <h1 class="title">RELAI</h1>
         <div class="status-indicator">
           <span class="status-dot"></span>
           <span class="status-text">LOCAL</span>
         </div>
       </div>
-      <h1 class="title">CONTEXT BRIDGE</h1>
-      <div class="subtitle">NO SERVERS · NO TRACKING · 100% BROWSER</div>
+      <div class="subtitle">NO SERVERS · NO TRACKING · 100% LOCAL</div>
     </header>
 
-    <!-- Memory Bank -->
-    <section class="section">
+    <!-- Step 1: Capture -->
+    <section class="section section-workflow">
       <div class="section-header">
-        <h2>SAVED</h2>
-        <div id="context-count" class="counter">00</div>
+        <h2><span class="workflow-number">①</span> CAPTURE</h2>
+      </div>
+      <button id="btn-capture" class="control-btn control-btn-primary control-btn-large" data-action="capture">
+        <span class="btn-icon">📥</span>
+        <span class="btn-label">Capture from this tab</span>
+      </button>
+    </section>
+
+    <!-- Step 2: Saved Contexts -->
+    <section class="section section-workflow">
+      <div class="section-header">
+        <h2><span class="workflow-number">②</span> SAVED</h2>
+        <div id="context-count" class="counter">0</div>
       </div>
       <div id="contexts-list" class="contexts-list">
         <div class="empty-state">
           <div class="empty-icon">◯</div>
-          <p class="empty-title">Nothing saved yet</p>
-          <p class="empty-hint">Open an AI chat and click "Capture" below</p>
+          <p class="empty-title">No saved contexts yet</p>
+          <p class="empty-hint">Visit ChatGPT, Claude, Gemini, or Perplexity<br>and click Capture to save a conversation</p>
         </div>
       </div>
     </section>
 
-    <!-- Quick Capture -->
-    <section class="section">
+    <!-- Step 3: Send To -->
+    <section class="section section-workflow">
       <div class="section-header">
-        <h2>CURRENT TAB</h2>
+        <h2><span class="workflow-number">③</span> SEND TO</h2>
       </div>
-      <div class="controls-grid">
-        <button id="btn-capture" class="control-btn control-btn-primary" data-action="capture">
-          <span class="btn-label">CAPTURE</span>
-          <span class="btn-icon">▼</span>
-        </button>
-        <button id="btn-paste" class="control-btn control-btn-primary" data-action="paste">
-          <span class="btn-label">PASTE</span>
-          <span class="btn-icon">▲</span>
-        </button>
+      <div class="platform-grid">
+        <a href="https://chatgpt.com/" target="_blank" class="platform-btn" data-platform="chatgpt" title="Open ChatGPT">
+          <span class="platform-label">ChatGPT</span>
+        </a>
+        <a href="https://claude.ai/new" target="_blank" class="platform-btn" data-platform="claude" title="Open Claude">
+          <span class="platform-label">Claude</span>
+        </a>
+        <a href="https://gemini.google.com/app" target="_blank" class="platform-btn" data-platform="gemini" title="Open Gemini">
+          <span class="platform-label">Gemini</span>
+        </a>
+        <a href="https://www.perplexity.ai/" target="_blank" class="platform-btn" data-platform="perplexity" title="Open Perplexity">
+          <span class="platform-label">Perplexity</span>
+        </a>
       </div>
     </section>
 
-    <!-- Data -->
+    <!-- Data Management -->
     <section class="section">
       <div class="section-header">
         <h2>DATA</h2>
       </div>
       <div class="controls-grid">
         <button id="btn-export" class="control-btn" data-action="export">
-          <span class="btn-label">EXPORT</span>
-          <span class="btn-icon">▲</span>
+          <span class="btn-icon">📤</span>
+          <span class="btn-label">Export</span>
         </button>
         <button id="btn-import" class="control-btn" data-action="import">
-          <span class="btn-label">IMPORT</span>
-          <span class="btn-icon">▼</span>
+          <span class="btn-icon">📥</span>
+          <span class="btn-label">Import</span>
         </button>
         <button id="btn-clear" class="control-btn control-btn-danger" data-action="clear">
-          <span class="btn-label">CLEAR ALL</span>
           <span class="btn-icon">×</span>
+          <span class="btn-label">Clear All</span>
         </button>
       </div>
       <input type="file" id="import-file" accept=".json" style="display: none;">
-    </section>
-
-    <!-- Launch -->
-    <section class="section">
-      <div class="section-header">
-        <h2>LAUNCH</h2>
-      </div>
-      <div class="platform-grid">
-        <a href="https://chatgpt.com/" target="_blank" class="platform-btn" data-platform="gpt">
-          <span class="platform-label">GPT</span>
-        </a>
-        <a href="https://claude.ai/new" target="_blank" class="platform-btn" data-platform="cld">
-          <span class="platform-label">CLD</span>
-        </a>
-        <a href="https://gemini.google.com/app" target="_blank" class="platform-btn" data-platform="gem">
-          <span class="platform-label">GEM</span>
-        </a>
-        <a href="https://www.perplexity.ai/" target="_blank" class="platform-btn" data-platform="prp">
-          <span class="platform-label">PRP</span>
-        </a>
-      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
       <span class="footer-item">v0.1.0</span>
       <span class="footer-sep">·</span>
-      <a href="https://github.com/anthropics/ai-context-bridge" target="_blank" class="footer-link">GITHUB</a>
+      <a href="https://github.com/kirillpolevoy/ai-context-bridge" target="_blank" class="footer-link">GitHub</a>
       <span class="footer-sep">·</span>
       <span class="footer-item">MIT</span>
     </footer>
@@ -123,15 +116,15 @@
         <div class="modal-section">
           <div class="modal-section-label">SEND TO</div>
           <div class="modal-send-grid">
-            <button id="modal-send-chatgpt" class="modal-send-btn" data-platform="chatgpt">GPT</button>
-            <button id="modal-send-claude" class="modal-send-btn" data-platform="claude">CLD</button>
-            <button id="modal-send-gemini" class="modal-send-btn" data-platform="gemini">GEM</button>
-            <button id="modal-send-perplexity" class="modal-send-btn" data-platform="perplexity">PRP</button>
+            <button id="modal-send-chatgpt" class="modal-send-btn" data-platform="chatgpt">ChatGPT</button>
+            <button id="modal-send-claude" class="modal-send-btn" data-platform="claude">Claude</button>
+            <button id="modal-send-gemini" class="modal-send-btn" data-platform="gemini">Gemini</button>
+            <button id="modal-send-perplexity" class="modal-send-btn" data-platform="perplexity">Perplexity</button>
           </div>
         </div>
         <div class="modal-actions">
-          <button id="modal-copy" class="modal-action-btn">COPY</button>
-          <button id="modal-delete" class="modal-action-btn modal-action-danger">DELETE</button>
+          <button id="modal-copy" class="modal-action-btn">Copy</button>
+          <button id="modal-delete" class="modal-action-btn modal-action-danger">Delete</button>
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "AI Context Bridge",
+  "name": "Relai",
+  "short_name": "Relai",
   "version": "0.1.0",
-  "description": "Privacy-first context sharing between AI assistants. Local-only, no tracking, open source.",
+  "description": "Share AI conversations locally. No servers, no tracking, 100% private.",
   "permissions": [
     "storage",
     "activeTab",

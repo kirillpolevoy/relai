@@ -1,15 +1,8 @@
 /**
- * AI Context Bridge - Popup Script
+ * Relai - Popup Script
  *
  * Manages the popup UI for viewing and managing saved contexts.
  */
-
-const PLATFORM_ABBR = {
-  chatgpt: 'GPT',
-  claude: 'CLD',
-  gemini: 'GEM',
-  perplexity: 'PRP'
-};
 
 const PLATFORM_NAMES = {
   chatgpt: 'ChatGPT',
@@ -39,14 +32,14 @@ async function loadContexts() {
   const counterEl = document.getElementById('context-count');
 
   // Update counter
-  counterEl.textContent = String(contexts.length).padStart(2, '0');
+  counterEl.textContent = String(contexts.length);
 
   if (contexts.length === 0) {
     listEl.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">◯</div>
-        <p class="empty-title">NO CAPTURES</p>
-        <p class="empty-hint">PRESS 🔄 ON AI PLATFORM</p>
+        <p class="empty-title">No saved contexts yet</p>
+        <p class="empty-hint">Visit ChatGPT, Claude, Gemini, or Perplexity<br>and click Capture to save a conversation</p>
       </div>
     `;
     return;
@@ -54,7 +47,7 @@ async function loadContexts() {
 
   listEl.innerHTML = contexts.map(ctx => `
     <div class="context-item" data-id="${ctx.id}">
-      <span class="context-platform">${PLATFORM_ABBR[ctx.source] || 'UNK'}</span>
+      <span class="context-platform">${PLATFORM_NAMES[ctx.source] || 'Unknown'}</span>
       <div class="context-info">
         <div class="context-title">${escapeHtml(ctx.title || 'UNTITLED')}</div>
         <div class="context-meta">
@@ -171,7 +164,7 @@ async function exportAll() {
 
   const a = document.createElement('a');
   a.href = url;
-  a.download = `ai-context-bridge-export-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `relai-export-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
 
   URL.revokeObjectURL(url);
@@ -260,9 +253,8 @@ function setupEventListeners() {
   document.getElementById('modal-copy').addEventListener('click', copyContext);
   document.getElementById('modal-delete').addEventListener('click', deleteContext);
 
-  // Capture/Paste from current tab
+  // Capture from current tab
   document.getElementById('btn-capture').addEventListener('click', captureFromCurrentTab);
-  document.getElementById('btn-paste').addEventListener('click', pasteToCurrentTab);
 
   // Data actions
   document.getElementById('btn-export').addEventListener('click', exportAll);
