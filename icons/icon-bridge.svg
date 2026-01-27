@@ -1,0 +1,47 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="128">
+      <stop offset="0%" stop-color="#1a1612"/>
+      <stop offset="100%" stop-color="#0f0d0a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="128" height="128" fill="url(#bgGrad)"/>
+
+  <!-- Yellow border frame -->
+  <rect x="6" y="6" width="116" height="116" stroke="#ffa41b" stroke-width="3" fill="none" rx="8"/>
+
+  <!-- Left platform node (representing one AI) -->
+  <rect x="20" y="52" width="24" height="24" fill="#ffa41b" rx="4"/>
+  <text x="32" y="67" font-family="monospace" font-size="10" font-weight="bold" fill="#1a1612" text-anchor="middle">AI</text>
+
+  <!-- Right platform node (representing another AI) -->
+  <rect x="84" y="52" width="24" height="24" fill="#ffa41b" rx="4"/>
+  <text x="96" y="67" font-family="monospace" font-size="10" font-weight="bold" fill="#1a1612" text-anchor="middle">AI</text>
+
+  <!-- Bridge connection arcs -->
+  <path d="M 44 60 Q 64 45 84 60" stroke="#7fb069" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 44 68 Q 64 83 84 68" stroke="#7fb069" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Data flow particles -->
+  <circle cx="54" cy="56" r="3" fill="#7fb069" opacity="0.8"/>
+  <circle cx="64" cy="52" r="3" fill="#7fb069" opacity="0.6"/>
+  <circle cx="74" cy="56" r="3" fill="#7fb069" opacity="0.8"/>
+
+  <circle cx="54" cy="72" r="3" fill="#7fb069" opacity="0.6"/>
+  <circle cx="64" cy="76" r="3" fill="#7fb069" opacity="0.8"/>
+  <circle cx="74" cy="72" r="3" fill="#7fb069" opacity="0.6"/>
+
+  <!-- Bottom label -->
+  <rect x="38" y="96" width="52" height="18" fill="#ffa41b" rx="3"/>
+  <text x="64" y="108" font-family="monospace" font-size="12" font-weight="bold" fill="#1a1612" text-anchor="middle">BRIDGE</text>
+</svg>

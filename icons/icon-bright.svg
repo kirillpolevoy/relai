@@ -1,0 +1,23 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bright yellow/amber background -->
+  <rect width="128" height="128" fill="#ffa41b"/>
+
+  <!-- Dark border for definition -->
+  <rect x="4" y="4" width="120" height="120" stroke="#1a1612" stroke-width="4" fill="none" rx="8"/>
+
+  <!-- Left AI box - dark brown -->
+  <rect x="20" y="44" width="36" height="36" fill="#1a1612" rx="6"/>
+
+  <!-- Right AI box - dark brown -->
+  <rect x="72" y="44" width="36" height="36" fill="#1a1612" rx="6"/>
+
+  <!-- Bridge connection - green, thicker -->
+  <rect x="36" y="60" width="56" height="8" fill="#7fb069" rx="2"/>
+
+  <!-- Arrow pointing right - bolder -->
+  <polygon points="88,64 76,56 76,72" fill="#7fb069"/>
+
+  <!-- Small accent dots on boxes for detail -->
+  <circle cx="38" cy="62" r="4" fill="#ffa41b"/>
+  <circle cx="90" cy="62" r="4" fill="#ffa41b"/>
+</svg>

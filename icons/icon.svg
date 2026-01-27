@@ -1,0 +1,18 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Yellow background fills ENTIRE canvas -->
+  <rect width="128" height="128" fill="#ffa41b"/>
+
+  <!-- Left AI platform - fills almost entire left half -->
+  <rect x="8" y="8" width="48" height="112" fill="#2d2820" rx="6"/>
+
+  <!-- Right AI platform - fills almost entire right half -->
+  <rect x="72" y="8" width="48" height="112" fill="#2d2820" rx="6"/>
+
+  <!-- Connection arrow - thick and centered -->
+  <rect x="32" y="60" width="64" height="8" fill="#7fb069" rx="2"/>
+  <polygon points="92,64 82,58 82,70" fill="#7fb069"/>
+
+  <!-- Accent dots for visual interest -->
+  <circle cx="32" cy="64" r="7" fill="#ffa41b"/>
+  <circle cx="96" cy="64" r="7" fill="#ffa41b"/>
+</svg>

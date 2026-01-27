@@ -1,0 +1,20 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bright yellow background -->
+  <rect width="128" height="128" fill="#ffa41b"/>
+
+  <!-- Left AI box - nearly fills left half -->
+  <rect x="4" y="12" width="52" height="104" fill="#1a1612" rx="6"/>
+
+  <!-- Right AI box - nearly fills right half -->
+  <rect x="72" y="12" width="52" height="104" fill="#1a1612" rx="6"/>
+
+  <!-- Bridge connection - thick green bar in middle -->
+  <rect x="20" y="58" width="88" height="12" fill="#7fb069" rx="4"/>
+
+  <!-- Arrow pointing right -->
+  <polygon points="104,64 92,56 92,72" fill="#7fb069"/>
+
+  <!-- Accent dots -->
+  <circle cx="30" cy="64" r="7" fill="#ffa41b"/>
+  <circle cx="98" cy="64" r="7" fill="#ffa41b"/>
+</svg>

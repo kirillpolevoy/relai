@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Context Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="model-badge">CTX-1</div>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">LOCAL</span>
+        </div>
+      </div>
+      <h1 class="title">CONTEXT BRIDGE</h1>
+      <div class="subtitle">NO SERVERS · NO TRACKING · 100% BROWSER</div>
+    </header>
+
+    <!-- Memory Bank -->
+    <section class="section">
+      <div class="section-header">
+        <h2>SAVED</h2>
+        <div id="context-count" class="counter">00</div>
+      </div>
+      <div id="contexts-list" class="contexts-list">
+        <div class="empty-state">
+          <div class="empty-icon">◯</div>
+          <p class="empty-title">Nothing saved yet</p>
+          <p class="empty-hint">Open an AI chat and click "Capture" below</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Capture -->
+    <section class="section">
+      <div class="section-header">
+        <h2>CURRENT TAB</h2>
+      </div>
+      <div class="controls-grid">
+        <button id="btn-capture" class="control-btn control-btn-primary" data-action="capture">
+          <span class="btn-label">CAPTURE</span>
+          <span class="btn-icon">▼</span>
+        </button>
+        <button id="btn-paste" class="control-btn control-btn-primary" data-action="paste">
+          <span class="btn-label">PASTE</span>
+          <span class="btn-icon">▲</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Data -->
+    <section class="section">
+      <div class="section-header">
+        <h2>DATA</h2>
+      </div>
+      <div class="controls-grid">
+        <button id="btn-export" class="control-btn" data-action="export">
+          <span class="btn-label">EXPORT</span>
+          <span class="btn-icon">▲</span>
+        </button>
+        <button id="btn-import" class="control-btn" data-action="import">
+          <span class="btn-label">IMPORT</span>
+          <span class="btn-icon">▼</span>
+        </button>
+        <button id="btn-clear" class="control-btn control-btn-danger" data-action="clear">
+          <span class="btn-label">CLEAR ALL</span>
+          <span class="btn-icon">×</span>
+        </button>
+      </div>
+      <input type="file" id="import-file" accept=".json" style="display: none;">
+    </section>
+
+    <!-- Launch -->
+    <section class="section">
+      <div class="section-header">
+        <h2>LAUNCH</h2>
+      </div>
+      <div class="platform-grid">
+        <a href="https://chatgpt.com/" target="_blank" class="platform-btn" data-platform="gpt">
+          <span class="platform-label">GPT</span>
+        </a>
+        <a href="https://claude.ai/new" target="_blank" class="platform-btn" data-platform="cld">
+          <span class="platform-label">CLD</span>
+        </a>
+        <a href="https://gemini.google.com/app" target="_blank" class="platform-btn" data-platform="gem">
+          <span class="platform-label">GEM</span>
+        </a>
+        <a href="https://www.perplexity.ai/" target="_blank" class="platform-btn" data-platform="prp">
+          <span class="platform-label">PRP</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span class="footer-item">v0.1.0</span>
+      <span class="footer-sep">·</span>
+      <a href="https://github.com/anthropics/ai-context-bridge" target="_blank" class="footer-link">GITHUB</a>
+      <span class="footer-sep">·</span>
+      <span class="footer-item">MIT</span>
+    </footer>
+  </div>
+
+  <!-- Context Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">CONTEXT</h3>
+        <button id="modal-close" class="modal-close">×</button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-footer">
+        <div class="modal-section">
+          <div class="modal-section-label">SEND TO</div>
+          <div class="modal-send-grid">
+            <button id="modal-send-chatgpt" class="modal-send-btn" data-platform="chatgpt">GPT</button>
+            <button id="modal-send-claude" class="modal-send-btn" data-platform="claude">CLD</button>
+            <button id="modal-send-gemini" class="modal-send-btn" data-platform="gemini">GEM</button>
+            <button id="modal-send-perplexity" class="modal-send-btn" data-platform="perplexity">PRP</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="modal-copy" class="modal-action-btn">COPY</button>
+          <button id="modal-delete" class="modal-action-btn modal-action-danger">DELETE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

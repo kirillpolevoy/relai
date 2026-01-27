@@ -1,0 +1,19 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" fill="#1a1612"/>
+
+  <!-- Border -->
+  <rect x="8" y="8" width="112" height="112" stroke="#ffa41b" stroke-width="6" fill="none" rx="12"/>
+
+  <!-- Left AI box -->
+  <rect x="24" y="48" width="32" height="32" fill="#ffa41b" rx="4"/>
+
+  <!-- Right AI box -->
+  <rect x="72" y="48" width="32" height="32" fill="#ffa41b" rx="4"/>
+
+  <!-- Bridge line -->
+  <rect x="40" y="62" width="48" height="4" fill="#7fb069"/>
+
+  <!-- Arrow pointing right -->
+  <polygon points="84,64 76,60 76,68" fill="#7fb069"/>
+</svg>

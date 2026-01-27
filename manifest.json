@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "AI Context Bridge",
+  "version": "0.1.0",
+  "description": "Privacy-first context sharing between AI assistants. Local-only, no tracking, open source.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://www.perplexity.ai/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
+      "js": ["src/content-scripts/chatgpt.js"],
+      "css": ["styles/overlay.css"]
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["src/content-scripts/claude.js"],
+      "css": ["styles/overlay.css"]
+    },
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["src/content-scripts/gemini.js"],
+      "css": ["styles/overlay.css"]
+    },
+    {
+      "matches": ["https://www.perplexity.ai/*"],
+      "js": ["src/content-scripts/perplexity.js"],
+      "css": ["styles/overlay.css"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

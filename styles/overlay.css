@@ -1,0 +1,310 @@
+/* AI Context Bridge - Retro TE Overlay Styles */
+
+/* Floating Action Button */
+.acb-floating-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  font-family: 'Space Mono', 'Courier New', monospace;
+}
+
+.acb-btn-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  background: #1a1a1a;
+  border: 3px solid #ff6b35;
+  color: #ff6b35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  transition: all 0.15s ease;
+  user-select: none;
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.acb-btn-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ff6b35;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.acb-icon-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.acb-btn-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(255, 107, 53, 0.4);
+}
+
+.acb-btn-icon:hover::before {
+  opacity: 0.1;
+}
+
+.acb-btn-icon:active {
+  transform: scale(0.95);
+}
+
+.acb-floating-btn.acb-expanded .acb-btn-icon {
+  border-color: #06ffa5;
+  color: #06ffa5;
+  box-shadow: 0 4px 16px rgba(6, 255, 165, 0.3);
+}
+
+.acb-floating-btn.acb-expanded .acb-btn-icon::before {
+  background: #06ffa5;
+}
+
+/* Menu */
+.acb-btn-menu {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 280px;
+  background: #2a2a2a;
+  border: 2px solid #ff6b35;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+}
+
+.acb-floating-btn.acb-expanded .acb-btn-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.acb-menu-header {
+  background: #3a3a3a;
+  border-bottom: 1px solid #4a4a4a;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acb-menu-badge {
+  font-size: 8px;
+  font-weight: 700;
+  color: #ff6b35;
+  border: 1px solid #ff6b35;
+  padding: 2px 6px;
+  letter-spacing: 0.15em;
+}
+
+.acb-menu-title {
+  font-size: 9px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.15em;
+}
+
+.acb-menu-section {
+  padding: 8px 0;
+}
+
+.acb-menu-label {
+  padding: 6px 12px 4px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #888888;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.acb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #ffffff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.1s ease;
+  font-family: 'Space Mono', 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.acb-menu-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #ff6b35;
+  transform: scaleY(0);
+  transition: transform 0.15s ease;
+}
+
+.acb-menu-item:hover {
+  background: #3a3a3a;
+  color: #ff6b35;
+}
+
+.acb-menu-item:hover::before {
+  transform: scaleY(1);
+}
+
+.acb-menu-item:active {
+  background: #4a4a4a;
+}
+
+.acb-menu-item.acb-primary {
+  font-weight: 700;
+}
+
+.acb-menu-item.acb-primary:hover {
+  color: #06ffa5;
+}
+
+.acb-menu-item.acb-primary:hover::before {
+  background: #06ffa5;
+}
+
+.acb-item-icon {
+  font-size: 14px;
+  color: #ff6b35;
+  font-weight: 400;
+  width: 16px;
+  text-align: center;
+}
+
+.acb-menu-item:hover .acb-item-icon {
+  color: #ff6b35;
+}
+
+.acb-menu-item.acb-primary:hover .acb-item-icon {
+  color: #06ffa5;
+}
+
+.acb-item-abbr {
+  font-size: 9px;
+  font-weight: 700;
+  color: #ff6b35;
+  width: 32px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.acb-menu-item:hover .acb-item-abbr {
+  color: #ff6b35;
+}
+
+.acb-menu-divider {
+  height: 1px;
+  background: #4a4a4a;
+  margin: 0;
+}
+
+/* Notification Toast */
+.acb-notification {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  z-index: 1000000;
+  padding: 10px 16px;
+  background: #ff6b35;
+  border: 2px solid #1a1a1a;
+  font-size: 9px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  animation: acb-slideIn 0.2s ease;
+  font-family: 'Space Mono', 'Courier New', monospace;
+}
+
+.acb-notification-success {
+  background: #06ffa5;
+  border-color: #1a1a1a;
+}
+
+.acb-notification-error {
+  background: #e63946;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.acb-notification-info {
+  background: #ff6b35;
+  border-color: #1a1a1a;
+}
+
+.acb-notification-hide {
+  animation: acb-slideOut 0.2s ease forwards;
+}
+
+@keyframes acb-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes acb-slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Responsive positioning for mobile */
+@media (max-width: 768px) {
+  .acb-floating-btn {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .acb-btn-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 9px;
+  }
+
+  .acb-btn-menu {
+    bottom: 62px;
+    width: 260px;
+  }
+
+  .acb-notification {
+    bottom: 76px;
+    right: 16px;
+    left: 16px;
+    text-align: center;
+  }
+}
+
+/* Ensure proper font loading */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');

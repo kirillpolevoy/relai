@@ -1,0 +1,24 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" fill="#1a1a1a"/>
+
+  <!-- Orange border frame -->
+  <rect x="8" y="8" width="112" height="112" stroke="#ff6b35" stroke-width="4" fill="none"/>
+
+  <!-- Main icon elements - simplified for small sizes -->
+
+  <!-- Left circle -->
+  <circle cx="42" cy="64" r="12" fill="#ff6b35"/>
+
+  <!-- Right circle -->
+  <circle cx="86" cy="64" r="12" fill="#ff6b35"/>
+
+  <!-- Connection lines -->
+  <line x1="54" y1="64" x2="74" y2="64" stroke="#06ffa5" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 54 64 Q 64 50 74 64" stroke="#06ffa5" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 54 64 Q 64 78 74 64" stroke="#06ffa5" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- CTX-1 badge at bottom -->
+  <rect x="44" y="96" width="40" height="16" fill="#ff6b35"/>
+  <text x="64" y="107" font-family="monospace" font-size="11" font-weight="bold" fill="#1a1a1a" text-anchor="middle">CTX-1</text>
+</svg>
