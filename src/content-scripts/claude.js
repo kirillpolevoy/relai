@@ -73,9 +73,16 @@ class ClaudeExtractor {
   extractMessages() {
     const messages = [];
 
+    console.log('[Claude] Starting message extraction');
+
     // Claude's message structure - look for user and assistant message containers
     const conversationContainer = document.querySelector('[class*="conversation"], main');
-    if (!conversationContainer) return messages;
+    console.log('[Claude] Conversation container found:', !!conversationContainer);
+
+    if (!conversationContainer) {
+      console.log('[Claude] No conversation container found');
+      return messages;
+    }
 
     // Try multiple selector strategies for Claude's UI
     const selectors = [
@@ -87,9 +94,11 @@ class ClaudeExtractor {
       { user: '[data-role="user"]', assistant: '[data-role="assistant"]' }
     ];
 
-    for (const selector of selectors) {
+    for (const [index, selector] of selectors.entries()) {
+      console.log(`[Claude] Trying selector strategy ${index + 1}:`, selector);
       const userMsgs = document.querySelectorAll(selector.user);
       const assistantMsgs = document.querySelectorAll(selector.assistant);
+      console.log(`[Claude] Strategy ${index + 1} found: ${userMsgs.length} user, ${assistantMsgs.length} assistant`);
 
       if (userMsgs.length > 0 || assistantMsgs.length > 0) {
         // Combine and sort by DOM position
@@ -108,13 +117,19 @@ class ClaudeExtractor {
           }
         }
 
-        if (messages.length > 0) break;
+        if (messages.length > 0) {
+          console.log(`[Claude] Strategy ${index + 1} succeeded, extracted ${messages.length} messages`);
+          break;
+        }
       }
     }
 
     // Fallback: Try to parse conversation from general structure
     if (messages.length === 0) {
+      console.log('[Claude] All strategies failed, trying fallback');
       const turns = document.querySelectorAll('[class*="turn"], [class*="message-row"]');
+      console.log('[Claude] Fallback found turns:', turns.length);
+
       turns.forEach(turn => {
         const isUser = turn.classList.toString().includes('human') ||
                        turn.classList.toString().includes('user') ||
@@ -127,6 +142,20 @@ class ClaudeExtractor {
           });
         }
       });
+
+      console.log('[Claude] Fallback extracted:', messages.length, 'messages');
+    }
+
+    // If still no messages, log sample of DOM structure for debugging
+    if (messages.length === 0) {
+      console.log('[Claude] No messages found. Sampling DOM structure:');
+      const sampleElements = conversationContainer.querySelectorAll('div[class]');
+      const classNames = new Set();
+      for (let i = 0; i < Math.min(20, sampleElements.length); i++) {
+        const classes = sampleElements[i].className;
+        if (classes) classNames.add(classes);
+      }
+      console.log('[Claude] Sample class names found:', Array.from(classNames).slice(0, 10));
     }
 
     return messages;
