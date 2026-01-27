@@ -1,10 +1,12 @@
-# AI Context Bridge 🔄
+# Relai 🔄
 
-**Privacy-first context sharing between AI assistants.**
+**Share AI conversations locally. No servers, no tracking, 100% private.**
 
 A Chrome extension that lets you seamlessly share conversation context between ChatGPT, Claude, Gemini, and Perplexity — without any external servers or tracking.
 
-## Why?
+![Relai Extension](icons/icon128.png)
+
+## Why Relai?
 
 Power users often switch between AI assistants:
 - Claude for deep reasoning
@@ -12,25 +14,24 @@ Power users often switch between AI assistants:
 - Perplexity for research
 - Gemini for Google integration
 
-But every time you switch, you lose context and have to re-explain everything. AI Context Bridge solves this.
+But every time you switch, you lose context and have to re-explain everything. **Relai solves this.**
 
 ## Features
 
-- **🔒 100% Local** - All data stays in your browser (IndexedDB). No servers, no tracking, no cloud sync.
-- **📥 Capture Context** - Save any conversation with one click
-- **📤 Send to Any AI** - Open ChatGPT, Claude, Gemini, or Perplexity with context pre-loaded
-- **📋 Paste Context** - Manually paste saved context into any chat
+- **🔒 100% Local** - All data stays in your browser. No servers, no tracking, no cloud sync.
+- **📥 Capture Conversations** - Save any conversation with one click
+- **🔄 Send to Any AI** - Transfer context to ChatGPT, Claude, Gemini, or Perplexity
 - **💾 Export/Import** - Backup your contexts as JSON
-- **🌙 Dark Mode** - Respects system preferences
+- **🎨 Retro-Futuristic UI** - WALL-E inspired design with warm amber tones
 
 ## Supported Platforms
 
-| Platform | Capture | Paste | Auto-inject |
-|----------|---------|-------|-------------|
-| ChatGPT  | ✅ | ✅ | ✅ |
-| Claude   | ✅ | ✅ | ✅ |
-| Gemini   | ✅ | ✅ | ✅ |
-| Perplexity | ✅ | ✅ | ✅ |
+| Platform | Capture | Send To | Status |
+|----------|---------|---------|--------|
+| ChatGPT  | ✅ | ✅ | Fully supported |
+| Claude   | ✅ | ✅ | Fully supported |
+| Gemini   | ✅ | ✅ | Fully supported |
+| Perplexity | ✅ | ✅ | Fully supported |
 
 ## Installation
 
@@ -38,16 +39,17 @@ But every time you switch, you lose context and have to re-explain everything. A
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ai-context-bridge.git
+   git clone https://github.com/kirillpolevoy/ai-context-bridge.git
+   cd ai-context-bridge
    ```
 
 2. Open Chrome and go to `chrome://extensions/`
 
 3. Enable "Developer mode" (toggle in top right)
 
-4. Click "Load unpacked" and select the `ai-context-bridge` folder
+4. Click "Load unpacked" and select the project folder
 
-5. The extension icon should appear in your toolbar
+5. The Relai icon should appear in your toolbar
 
 ### From Chrome Web Store
 
@@ -55,49 +57,61 @@ But every time you switch, you lose context and have to re-explain everything. A
 
 ## Usage
 
-### Capture Context
+### Quick Start
+
+1. **Capture** - Open any AI chat (ChatGPT, Claude, etc.) and click the Relai extension icon
+2. Click **"Capture from this tab"** to save the conversation
+3. **Send** - Click on a saved context, then click **"Send to [Platform]"** to transfer it
+
+### Detailed Workflow
+
+#### ① Capture a Conversation
 
 1. Have a conversation on any supported AI platform
-2. Click the 🔄 floating button (bottom-right)
-3. Select "📥 Capture Context"
-4. Your conversation is now saved locally
+2. Click the Relai extension icon in your toolbar
+3. Click the **"Capture from this tab"** button
+4. Your conversation is saved locally
 
-### Get Second Opinion
+#### ② View Saved Contexts
 
-1. While on any AI platform, click the 🔄 button
-2. Select "Send to [Platform]" (e.g., "Send to Claude")
-3. A new tab opens with your context ready to paste
+1. Click the Relai icon to open the popup
+2. See all your saved conversations in the **"SAVED"** section
+3. Click any context to view details
 
-### Manual Paste
+#### ③ Send to Another AI
 
-1. Click the 🔄 button on any AI platform
-2. Select "📋 Paste Context Here"
-3. Your most recent saved context is pasted into the input
+1. Open a saved context by clicking it
+2. Click one of the **"Send to"** buttons (ChatGPT, Claude, Gemini, Perplexity)
+3. A new tab opens with the context auto-pasted
+4. Press Enter to send
 
-### Manage Contexts
+### Manage Your Data
 
-Click the extension icon in your toolbar to:
-- View all saved contexts
-- Delete old contexts
-- Export/import backups
-- Open any AI platform directly
+Open the Relai popup to:
+- **Export** - Download all contexts as JSON backup
+- **Import** - Restore from a previous backup
+- **Clear All** - Delete all saved contexts
 
 ## Privacy & Security
 
-**This extension is designed with privacy as the #1 priority:**
+**Relai is designed with privacy as the #1 priority:**
 
 - ✅ **No external servers** - Everything runs locally in your browser
-- ✅ **No analytics/tracking** - Zero telemetry, no Mixpanel, no nothing
+- ✅ **No analytics/tracking** - Zero telemetry, no collection, period
 - ✅ **No cloud sync** - Your data never leaves your device
 - ✅ **Open source** - Audit the code yourself
 - ✅ **Minimal permissions** - Only requests what's necessary
 
 ### Permissions Explained
 
-- `storage` - Save contexts to browser's local storage
-- `activeTab` - Read/inject into the current AI chat page
+- `storage` - Save contexts to browser's local storage (IndexedDB)
+- `activeTab` - Read/inject content on the current AI chat page
 - `scripting` - Run content scripts on AI platforms
-- `host_permissions` - Only for the 4 supported AI domains
+- `host_permissions` - Only for the 4 supported AI domains:
+  - `https://chat.openai.com/*` and `https://chatgpt.com/*`
+  - `https://claude.ai/*`
+  - `https://gemini.google.com/*`
+  - `https://www.perplexity.ai/*`
 
 ## Development
 
@@ -108,39 +122,89 @@ ai-context-bridge/
 ├── manifest.json          # Extension manifest (v3)
 ├── src/
 │   ├── background/        # Service worker
-│   ├── content-scripts/   # Platform-specific extractors
-│   ├── storage/           # IndexedDB wrapper
-│   └── utils/             # Shared utilities
+│   │   └── service-worker.js
+│   └── content-scripts/   # Platform-specific extractors
+│       ├── chatgpt.js
+│       ├── claude.js
+│       ├── gemini.js
+│       └── perplexity.js
 ├── popup/                 # Extension popup UI
-├── styles/                # Shared CSS
+│   ├── popup.html
+│   ├── popup.css
+│   └── popup.js
+├── styles/                # Shared styles
+│   └── overlay.css
 └── icons/                 # Extension icons
 ```
 
 ### Building
 
-No build step required! This is a vanilla JS extension.
+No build step required! This is a vanilla JavaScript extension.
 
 ### Testing Locally
 
 1. Make changes to the code
 2. Go to `chrome://extensions/`
-3. Click the refresh icon on the extension card
-4. Test on any supported AI platform
+3. Click the refresh icon (🔄) on the Relai extension card
+4. Hard refresh any open AI platform tabs (Cmd+Shift+R / Ctrl+Shift+R)
+5. Test the changes
 
 ### Adding a New Platform
 
 1. Create a new file in `src/content-scripts/` (e.g., `newplatform.js`)
-2. Implement the extractor class (see `chatgpt.js` for reference)
-3. Add the domain to `manifest.json` under `host_permissions` and `content_scripts`
-4. Update `PLATFORMS` in `service-worker.js` and `platforms.js`
+2. Implement the extractor class with these methods:
+   - `extractMessages()` - Extract conversation messages
+   - `extractTitle()` - Get conversation title
+   - `injectIntoInput()` - Paste text into input field
+   - `checkForPendingContext()` - Check for context to auto-paste
+3. Add the domain to `manifest.json`:
+   - Add to `host_permissions` array
+   - Add to `content_scripts` array
+4. Update `PLATFORMS` object in `src/background/service-worker.js`
+
+## Technical Details
+
+### How It Works
+
+1. **Content Scripts** run on each AI platform page
+2. **Extract** conversation messages by querying the DOM
+3. **Store** contexts in IndexedDB (browser's local database)
+4. **Background Service Worker** manages storage and tab operations
+5. **Auto-inject** when "Send to" flow opens a new platform tab
+
+### Data Format
+
+Contexts are stored as:
+
+```javascript
+{
+  id: "uuid",
+  source: "chatgpt" | "claude" | "gemini" | "perplexity",
+  title: "Conversation title",
+  messages: [
+    { role: "user", content: "..." },
+    { role: "assistant", content: "..." }
+  ],
+  url: "https://...",
+  timestamp: 1234567890
+}
+```
+
+## Recent Improvements
+
+- ✅ **Multi-strategy title extraction** - Captures accurate conversation titles from all platforms
+- ✅ **Improved context formatting** - Better prompts when transferring between AIs
+- ✅ **Fixed duplicate extraction** - Messages no longer captured multiple times
+- ✅ **Claude message extraction** - Now captures both user and assistant messages correctly
 
 ## Roadmap
 
 - [ ] Firefox support
 - [ ] Safari support
-- [ ] Keyboard shortcuts
-- [ ] Context tagging/search
+- [ ] Context search/filtering
+- [ ] Keyboard shortcuts (Ctrl+Shift+C to capture)
 - [ ] Side-by-side comparison view
+- [ ] Tags and organization
 - [ ] MCP (Model Context Protocol) integration
 
 ## Contributing
@@ -148,9 +212,11 @@ No build step required! This is a vanilla JS extension.
 Contributions are welcome! Please:
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Submit a pull request
+4. Commit with descriptive messages
+5. Push to your fork
+6. Submit a pull request
 
 ## License
 
@@ -158,8 +224,12 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Acknowledgments
 
-Built in response to the growing need for AI tool interoperability. Inspired by the [Model Context Protocol](https://modelcontextprotocol.io/) and the vision of portable AI memory.
+Built for AI power users who want their context to follow them across platforms. Inspired by the [Model Context Protocol](https://modelcontextprotocol.io/) and the vision of portable AI memory.
+
+Special thanks to the open source community and everyone who provided feedback during development.
 
 ---
 
-**Made with ❤️ for AI power users who want their context to follow them.**
+**Made with ❤️ for AI power users**
+
+*"Your conversations, your control"*

@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Local IndexedDB Storage
+ * Relai - Local IndexedDB Storage
  *
  * Privacy-first: All data stays in browser, never sent to external servers.
  * Uses IndexedDB for persistent local storage of conversation contexts.

@@ -1,30 +1,37 @@
-# Icons
+# Relai Icons
 
-This directory contains extension icons.
+This directory contains the Relai extension icons featuring a glowing neon circuit board design.
 
-## Required Files
+## Files
 
-Chrome extensions need PNG files at these sizes:
-- `icon16.png` - 16x16 (toolbar)
+- `icon-source.png` - Original high-resolution source image
+- `icon16.png` - 16x16 (browser toolbar)
 - `icon48.png` - 48x48 (extensions page)
-- `icon128.png` - 128x128 (Chrome Web Store)
+- `icon128.png` - 128x128 (Chrome Web Store listing)
 
-## Generating PNGs
+## Generating Icon Sizes
 
-The SVG source files are included. Convert them using:
+If you need to update the icon, place a new source image and resize using `sips` (macOS):
 
 ```bash
-# Using ImageMagick
-convert icon16.svg icon16.png
-convert icon48.svg icon48.png
-convert icon128.svg icon128.png
-
-# Or using Inkscape
-inkscape icon16.svg -o icon16.png -w 16 -h 16
-inkscape icon48.svg -o icon48.png -w 48 -h 48
-inkscape icon128.svg -o icon128.png -w 128 -h 128
+# From the icons/ directory
+sips -z 128 128 icon-source.png --out icon128.png
+sips -z 48 48 icon-source.png --out icon48.png
+sips -z 16 16 icon-source.png --out icon16.png
 ```
 
-## Temporary Workaround
+Or using ImageMagick (cross-platform):
 
-For development, you can use any 16x16, 48x48, and 128x128 PNG files, or comment out the icon references in `manifest.json`.
+```bash
+convert icon-source.png -resize 128x128 icon128.png
+convert icon-source.png -resize 48x48 icon48.png
+convert icon-source.png -resize 16x16 icon16.png
+```
+
+## Design Guidelines
+
+The Relai icon features:
+- Glowing neon circuit board aesthetic
+- Warm amber/orange tones matching the WALL-E inspired UI
+- High contrast for visibility in toolbar
+- Distinctive design that stands out from generic AI assistant icons

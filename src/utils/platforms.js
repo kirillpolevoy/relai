@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Platform Definitions
+ * Relai - Platform Definitions
  *
  * Configuration and metadata for supported AI platforms.
  */

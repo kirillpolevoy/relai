@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Message Parser Utilities
+ * Relai - Message Parser Utilities
  *
  * Common utilities for parsing and formatting conversation messages
  * across different AI platforms.

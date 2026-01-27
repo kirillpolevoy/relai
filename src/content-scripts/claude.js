@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Claude Content Script
+ * Relai - Claude Content Script
  *
  * Extracts and injects conversation context for Claude (claude.ai)
  */
@@ -23,7 +23,7 @@ class ClaudeExtractor {
     this.checkForPendingContext();
 
     this.isInitialized = true;
-    console.log('[AI Context Bridge] Claude extractor initialized');
+    console.log('[Relai] Claude extractor initialized');
   }
 
   waitForElement(selector, timeout = 5000) {
@@ -243,7 +243,7 @@ class ClaudeExtractor {
     button.innerHTML = `
       <div class="acb-btn-icon">🔄</div>
       <div class="acb-btn-menu">
-        <div class="acb-menu-header">AI Context Bridge</div>
+        <div class="acb-menu-header">Relai</div>
         <button class="acb-menu-item" data-action="capture">
           📥 Capture Context
         </button>

@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Perplexity Content Script
+ * Relai - Perplexity Content Script
  *
  * Extracts and injects conversation context for Perplexity AI
  */
@@ -22,7 +22,7 @@ class PerplexityExtractor {
     this.checkForPendingContext();
 
     this.isInitialized = true;
-    console.log('[AI Context Bridge] Perplexity extractor initialized');
+    console.log('[Relai] Perplexity extractor initialized');
   }
 
   waitForElement(selector, timeout = 5000) {
@@ -160,7 +160,7 @@ class PerplexityExtractor {
     button.innerHTML = `
       <div class="acb-btn-icon">🔄</div>
       <div class="acb-btn-menu">
-        <div class="acb-menu-header">AI Context Bridge</div>
+        <div class="acb-menu-header">Relai</div>
         <button class="acb-menu-item" data-action="capture">
           📥 Capture Context
         </button>

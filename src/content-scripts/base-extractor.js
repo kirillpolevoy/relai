@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Base Content Script Extractor
+ * Relai - Base Content Script Extractor
  *
  * Base class for extracting conversations from AI chat interfaces.
  * Each platform implements its own selectors and parsing logic.
@@ -24,7 +24,7 @@ class BaseExtractor {
     this.observeConversation();
 
     this.isInitialized = true;
-    console.log(`[AI Context Bridge] Initialized for ${this.platformId}`);
+    console.log(`[Relai] Initialized for ${this.platformId}`);
   }
 
   /**
@@ -166,7 +166,7 @@ class BaseExtractor {
         this.showNotification('Failed to save context', 'error');
       }
     } catch (error) {
-      console.error('[AI Context Bridge] Capture error:', error);
+      console.error('[Relai] Capture error:', error);
       this.showNotification('Error capturing context', 'error');
     }
   }
@@ -190,7 +190,7 @@ class BaseExtractor {
 
       this.showNotification('Context pasted', 'success');
     } catch (error) {
-      console.error('[AI Context Bridge] Paste error:', error);
+      console.error('[Relai] Paste error:', error);
       this.showNotification('Error pasting context', 'error');
     }
   }
@@ -224,7 +224,7 @@ class BaseExtractor {
         this.showNotification(`Opening ${platformId}...`, 'success');
       }
     } catch (error) {
-      console.error('[AI Context Bridge] Send error:', error);
+      console.error('[Relai] Send error:', error);
       this.showNotification('Error sending to platform', 'error');
     }
   }
@@ -285,11 +285,11 @@ class BaseExtractor {
       // Extension context invalidated (extension was reloaded)
       if (error.message.includes('Extension context invalidated')) {
         this.showNotification('Extension was reloaded. Please refresh this page.', 'warning');
-        console.warn('[AI Context Bridge] Extension context invalidated. Page refresh needed.');
+        console.warn('[Relai] Extension context invalidated. Page refresh needed.');
         return null;
       }
       // Other errors
-      console.error('[AI Context Bridge] Message send failed:', error);
+      console.error('[Relai] Message send failed:', error);
       this.showNotification('Communication error. Try reloading the page.', 'error');
       return null;
     }

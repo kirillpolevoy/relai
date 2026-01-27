@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Gemini Content Script
+ * Relai - Gemini Content Script
  *
  * Extracts and injects conversation context for Google Gemini
  */
@@ -22,7 +22,7 @@ class GeminiExtractor {
     this.checkForPendingContext();
 
     this.isInitialized = true;
-    console.log('[AI Context Bridge] Gemini extractor initialized');
+    console.log('[Relai] Gemini extractor initialized');
   }
 
   waitForElement(selector, timeout = 5000) {
@@ -163,7 +163,7 @@ class GeminiExtractor {
     button.innerHTML = `
       <div class="acb-btn-icon">🔄</div>
       <div class="acb-btn-menu">
-        <div class="acb-menu-header">AI Context Bridge</div>
+        <div class="acb-menu-header">Relai</div>
         <button class="acb-menu-item" data-action="capture">
           📥 Capture Context
         </button>

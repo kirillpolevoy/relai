@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - ChatGPT Content Script
+ * Relai - ChatGPT Content Script
  *
  * Extracts and injects conversation context for ChatGPT (chat.openai.com, chatgpt.com)
  */
@@ -29,7 +29,7 @@ class ChatGPTExtractor {
     this.checkForPendingContext();
 
     this.isInitialized = true;
-    console.log('[AI Context Bridge] ChatGPT extractor initialized');
+    console.log('[Relai] ChatGPT extractor initialized');
   }
 
   waitForElement(selector, timeout = 5000) {
@@ -204,7 +204,7 @@ class ChatGPTExtractor {
     button.innerHTML = `
       <div class="acb-btn-icon">🔄</div>
       <div class="acb-btn-menu" id="acb-btn-menu">
-        <div class="acb-menu-header">AI Context Bridge</div>
+        <div class="acb-menu-header">Relai</div>
         <button class="acb-menu-item" data-action="capture">
           📥 Capture Context
         </button>

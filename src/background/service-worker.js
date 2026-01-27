@@ -1,5 +1,5 @@
 /**
- * AI Context Bridge - Background Service Worker
+ * Relai - Background Service Worker
  *
  * Handles message passing, storage management, and tab operations.
  * All data stays local - no external API calls.
@@ -38,7 +38,7 @@ let pendingContext = null; // Context waiting to be pasted in target platform
 async function initStorage() {
   const data = await chrome.storage.local.get(['contexts']);
   contextCache = data.contexts || [];
-  console.log('[AI Context Bridge] Loaded', contextCache.length, 'contexts from storage');
+  console.log('[Relai] Loaded', contextCache.length, 'contexts from storage');
 }
 
 /**
@@ -239,7 +239,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Initialize on install/startup
 chrome.runtime.onInstalled.addListener(() => {
   initStorage();
-  console.log('[AI Context Bridge] Extension installed');
+  console.log('[Relai] Extension installed');
 });
 
 chrome.runtime.onStartup.addListener(() => {
