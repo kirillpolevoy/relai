@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scale Original Relai Icon</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    canvas {
+      border: 1px solid #666;
+      background: repeating-conic-gradient(#808080 0% 25%, transparent 0% 50%) 50% / 20px 20px;
+    }
+    .info {
+      color: white;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">Loading icon-source.png and scaling up...</div>
+  <canvas id="icon" width="512" height="512"></canvas>
+  <div class="info">Right-click canvas → Save Image As → icon-512.png</div>
+
+  <script>
+    const canvas = document.getElementById('icon');
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.onload = function() {
+      // Clear canvas (transparent)
+      ctx.clearRect(0, 0, 512, 512);
+
+      // Create rounded rectangle clipping path for transparent corners
+      const cornerRadius = 110; // Chrome extension style rounded corners
+
+      ctx.beginPath();
+      ctx.moveTo(cornerRadius, 0);
+      ctx.arcTo(512, 0, 512, 512, cornerRadius);
+      ctx.arcTo(512, 512, 0, 512, cornerRadius);
+      ctx.arcTo(0, 512, 0, 0, cornerRadius);
+      ctx.arcTo(0, 0, 512, 0, cornerRadius);
+      ctx.closePath();
+      ctx.clip();
+
+      // Original is 1024x1024
+      // We want to crop out ~15% padding on each side and scale result to 512x512
+      // This makes the design fill more space
+
+      const originalSize = 1024;
+      const cropPercent = 0.15; // Remove 15% padding from each side
+      const cropAmount = originalSize * cropPercent;
+
+      // Source coordinates (what we crop FROM the original)
+      const sx = cropAmount;
+      const sy = cropAmount;
+      const sWidth = originalSize - (cropAmount * 2);
+      const sHeight = originalSize - (cropAmount * 2);
+
+      // Destination (entire canvas)
+      const dx = 0;
+      const dy = 0;
+      const dWidth = 512;
+      const dHeight = 512;
+
+      // Draw cropped and scaled image (with rounded corners clipped)
+      ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+      console.log('Done! Image scaled up with transparent rounded corners.');
+      console.log('Save as icon-512.png, then I will resize to other sizes.');
+    };
+
+    img.onerror = function() {
+      document.querySelector('.info').textContent = 'ERROR: Could not load icon-source.png. Make sure it exists in the same folder.';
+    };
+
+    // Load the original icon
+    img.src = 'icon-source.png';
+  </script>
+</body>
+</html>
